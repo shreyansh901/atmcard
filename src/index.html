@@ -11,19 +11,18 @@
         <div class="card-front">
           <span class="name-output">JANE APPLESEED</span>
           <span class="number-output">0000 0000 0000 0000</span>
-          <span class="month-output">00</span>/<span class="year-output"
-            >00</span
-          >
+          <span class="month-output">00</span>/<span class="year-output">00</span>
         </div>
         <div class="card-back">
           <span class="cvc-output">000</span>
         </div>
       </div>
-      <form id="card-form">
+      <form id="card-form" autocomplete="off">
         <input
           type="text"
           class="name-input"
           placeholder="e.g. Jane Appleseed"
+          required
         />
         <span class="error empty"></span>
 
@@ -32,6 +31,7 @@
           class="number-input"
           placeholder="e.g. 1234 5678 9123 0000"
           maxlength="19"
+          required
         />
         <span class="error empty"></span>
         <span class="error invalid"></span>
@@ -43,6 +43,7 @@
             id="month-input"
             placeholder="MM"
             maxlength="2"
+            required
           />
           <span class="error empty"></span>
           <span class="error invalid"></span>
@@ -53,6 +54,7 @@
             id="year-input"
             placeholder="YY"
             maxlength="2"
+            required
           />
           <span class="error empty"></span>
           <span class="error invalid"></span>
@@ -63,6 +65,7 @@
           class="cvc-input"
           placeholder="e.g. 123"
           maxlength="3"
+          required
         />
         <span class="error empty"></span>
         <span class="error invalid"></span>
