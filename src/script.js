@@ -33,14 +33,14 @@ numberInput.addEventListener("input", () => {
   numberInput.value = formatted;
 });
 
-// 1) ✓ Issue: should update the expiry month in real-time
+// ✓ Issue: should update the expiry month in real-time
 monthInput.addEventListener("input", () => {
   let month = monthInput.value.replace(/\D/g, "").slice(0, 2); // allow digits only, max 2 chars
   monthInput.value = month;
   monthOutput.textContent = month ? month.padStart(2, "0") : "00";
 });
 
-// 2) ✓ Issue: should update the expiry year in real-time
+// ✓ Issue: should update the expiry year in real-time
 yearInput.addEventListener("input", () => {
   let year = yearInput.value.replace(/\D/g, "").slice(0, 2); // allow digits only, max 2 chars
   yearInput.value = year;
@@ -65,40 +65,36 @@ form.addEventListener("submit", function (e) {
     el.style.display = "none";
   });
 
-  // 3) ✓ Issue: should display error messages when submitting empty form
+  // should display error messages when submitting empty form
   if (!nameInput.value.trim()) {
     showError(nameInput, "Can't be blank", "empty");
     valid = false;
   }
-
   if (!numberInput.value.trim()) {
     showError(numberInput, "Can't be blank", "empty");
     valid = false;
   }
-
   if (!monthInput.value.trim()) {
     showError(monthInput, "Can't be blank", "empty");
     valid = false;
   }
-
   if (!yearInput.value.trim()) {
     showError(yearInput, "Can't be blank", "empty");
     valid = false;
   }
-
   if (!cvcInput.value.trim()) {
     showError(cvcInput, "Can't be blank", "empty");
     valid = false;
   }
 
-  // 4) ✓ Issue: should display error message for invalid card number
+  // should display error message for invalid card number
   const numClean = numberInput.value.replace(/\s/g, "");
   if (!/^\d{16}$/.test(numClean)) {
     showError(numberInput, "Wrong format, numbers only", "invalid");
     valid = false;
   }
 
-  // 5) ✓ Issue: should display error message for invalid expiry date
+  // should display error message for invalid expiry date
   if (
     !/^\d{2}$/.test(monthInput.value) ||
     +monthInput.value < 1 ||
@@ -112,7 +108,7 @@ form.addEventListener("submit", function (e) {
     valid = false;
   }
 
-  // 6) ✓ Issue: should display error message for invalid CVC
+  // should display error message for invalid CVC
   if (!/^\d{3}$/.test(cvcInput.value)) {
     showError(cvcInput, "Wrong format, numbers only", "invalid");
     valid = false;
@@ -126,13 +122,18 @@ form.addEventListener("submit", function (e) {
 
 // Helper to display error messages near the inputs
 function showError(inputEl, message, type) {
-  let errorSpan;
-  if (type === "empty") {
-    errorSpan = inputEl.nextElementSibling;
-  } else if (type === "invalid") {
-    errorSpan = inputEl.parentElement.querySelector(".error.invalid");
+  // [CHANGED] More robust error span selection for compatibility with Cypress selectors
+  let errorSpan = null;
+  let current = inputEl.nextElementSibling;
+  while (current) {
+    if (current.matches('.error.' + type)) {
+      errorSpan = current;
+      break;
+    }
+    current = current.nextElementSibling;
   }
   if (!errorSpan) {
+    // fallback to first .error (old logic)
     errorSpan = inputEl.nextElementSibling;
   }
   errorSpan.textContent = message;
